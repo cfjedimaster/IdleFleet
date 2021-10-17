@@ -1,0 +1,11 @@
+
+body {
+  font-family: Arial;  
+}
+
+#log {
+ background-color: #c0c0c0;
+ width: 500px;
+ height: 300px;
+ overflow: auto;
+}

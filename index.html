@@ -1,0 +1,38 @@
+<html>
+<head>
+	<title>IdleFleet</title>
+	<link rel="stylesheet" href="app.css">
+	<style>
+	[v-cloak] {display: none}
+	</style>
+</head>
+
+<body>
+<h2>IdleFleet Iteration 0.9</h2>
+
+<div id="app" v-cloak>
+
+	<p>
+		Total Fleet Size: {{ fleetSize }}<br/>
+		<span title="Represents ships at home ready to be sent out.">Ships Available to Send: {{ numAvailableShips }}</span><br/>
+		<span title="Reports when the soonest ship return time is.">Next Ship Returns In: {{ nextShipReturnTime }}</span><br/>
+		Credits: {{ credits | number }}<br/>
+		<span v-if="mercantileAllowed" title="Represents how well your ships will trade and earn money.">Mercantile Skill: {{ mercantileSkill }}<br/></span>
+		<span v-if="shipSpeedAllowed" title="Represents how much faster your ships travel.">Ship Speed Boost: {{ shipSpeed }}<br/></span>
+	</p>
+
+	<p>
+		<button @click="sendShips" :disabled="!shipsAvailable">Send Ship(s)</button> 
+		<button @click="buyShip" :disabled="!canBuyShip">Buy Ship: {{ newShipCost | number }} credits</button>
+		<button @click="buyMercantile" v-if="mercantileAllowed" :disabled="!canBuyMercantile">Improve Mercantile Skill: {{ newMercantileCost | number }}</button>
+		<button @click="buyShipSpeed" v-if="shipSpeedAllowed" :disabled="!canBuyShipSpeed">Improve Ship Speed: {{ newShipSpeedCost | number }}</button>
+	</p>
+
+	<div id="log" v-html="logDisplay" ref="logDiv"></div>
+	
+</div>
+
+	<script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+	<script src="app.js" type="module"></script>
+</body>
+</html>
