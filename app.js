@@ -11,7 +11,7 @@ Vue.config.devtools = false;
 /*
 Constants for the game:
 */
-const INITIAL_CREDITS = 500;
+const INITIAL_CREDITS = 500 * 999999;
 
 // number of seconds for trip
 const DURATION_MIN = 10;
@@ -174,7 +174,7 @@ const app = new Vue({
         }
       }
       if(hasOne) {
-         this.nextShipReturnTime = Math.floor((((new Date()) - result) / 1000) * -1) + ' seconds';
+         this.nextShipReturnTime = Math.max(Math.floor((((new Date()) - result) / 1000) * -1),0) + ' seconds';
       } else return '';
       
     }
