@@ -9,3 +9,12 @@ body {
  height: 300px;
  overflow: auto;
 }
+
+footer {
+  position: absolute;
+  bottom: 0;
+}
+
+footer a {
+  color: rgb(175, 21, 155);
+}
