@@ -11,7 +11,7 @@ Vue.config.devtools = false;
 /*
 Constants for the game:
 */
-const INITIAL_CREDITS = 500 * 999999;
+const INITIAL_CREDITS = 500;
 
 // number of seconds for trip
 const DURATION_MIN = 10;
