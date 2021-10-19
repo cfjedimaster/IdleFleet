@@ -18,3 +18,11 @@ footer {
 footer a {
   color: rgb(175, 21, 155);
 }
+
+.good {
+  color: green;
+}
+
+.bad {
+  color: red;
+}

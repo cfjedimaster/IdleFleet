@@ -23,17 +23,6 @@ const DURATION_INTERVAL = 1000;
 // duration between random msg (in seconds):
 const RANDOM_MSG_INTERVAL = 200;
 
-// for random chit chat
-const MESSAGES = [
- 'Starbrand announces new line of eco-friendly spaceships.',
- 'Economic reports continue to boom - stockholders happy!',
-  'Most popular social network promises edit support soon.',
-  'In a recent survey, ship captains report general satisifaction with job.',
-  'In a recent survey, ship captains report general dissatisifaction with job.',
-  'Billions reeling as social media star switches to new toilet paper brand.',
-  'Galaxy-wide Outlook service down - please use tin cans in the meantime.'
- ];
-
 // how big the log div can be
 const MAX_LOG = 100;
 
@@ -53,12 +42,16 @@ const app = new Vue({
     mercantileFlipped: false,
     nextShipReturnTime:null,
     shipSpeed: 1, 
-    shipSpeedFlipped: false
+    shipSpeedFlipped: false,
+    messages:null
   }, 
-  created() {
+  async created() {
     this.addShip();
     setInterval(this.randomMsg, RANDOM_MSG_INTERVAL * 1000);
     setInterval(this.updateNextShipReturnTime, 1000);
+    //random events are not on intervals, but kick off first one 5ish minutes
+    setTimeout(this.randomEvent, (5000 * 60) + (getRandomInt(0,3000)*60));
+    this.messages = await (await fetch('./messages.json')).json();
   },
   methods: {
 
@@ -114,7 +107,7 @@ const app = new Vue({
         }
       };
       this.ships.push(newShip);
-      this.addLog(`${newShip.name} purchased.`);
+      this.addLog(`${newShip.name} acquired.`);
     },
     
     buyMercantile() {
@@ -152,8 +145,50 @@ const app = new Vue({
       }
       return randomWordSlugs.generateSlug(2, options);
     },
+    randomEvent() {
+      console.log('randomEvent called');
+      /*
+      Random events fall into 4 categories:
+        get money
+        lose money
+        get ship
+        lose ship
+
+      for $$ stuff, it's always a percentage so the rewards are good later on
+      */
+      let whatHappened = getRandomInt(0, 100);
+
+      if(whatHappened < 40) {
+        let moneyWon = Math.floor(this.credits * (getRandomInt(10, 70)/100));
+        let msg = this.messages.moneyWon[getRandomInt(0, this.messages.moneyWon.length)];
+        this.credits += moneyWon;
+        this.addLog(`<strong class="good">${msg}</strong>`);
+      } else if(whatHappened < 80) {
+        // if money is real low, do nothing
+        if(this.credits < 500) return;
+        let moneyLost = Math.floor(this.credits * (getRandomInt(5, 30)/100));
+        let msg = this.messages.moneyLost[getRandomInt(0, this.messages.moneyLost.length)];
+        this.credits -= moneyLost;
+        this.addLog(`<strong class="bad">${msg}</strong>`);
+      } else if(whatHappened < 92) {
+        let msg = this.messages.shipWon[getRandomInt(0, this.messages.shipWon.length)];
+        this.addLog(`<strong class="good">${msg}</strong>`);
+        this.addShip();
+      } else {
+        /* disabled for now as I need to work on logic for removing a ship */
+        return;
+        if(this.ships.length < 10) return;
+        let msg = this.messages.shipLost[getRandomInt(0, this.messages.shipLost.length)];
+        this.addLog(`<strong class="bad">${msg}</strong>`);
+        //no idea if this will break shijt
+        this.ships.shift();
+      }
+
+      setTimeout(this.randomEvent, (5000 * 60) + (getRandomInt(0,3000)*60));
+
+    },
     randomMsg() {
-      let msg = MESSAGES[getRandomInt(0, MESSAGES.length)];
+      let msg = this.messages.news[getRandomInt(0, this.messages.news.length)];
       this.addLog(`<strong>${msg}</strong>`);
     },
     sendShips() {
@@ -210,7 +245,7 @@ const app = new Vue({
       return 10000 * this.mercantileSkill;
     },
     newShipCost() {
-      return 1000 * this.ships.length;
+      return 1250 * this.ships.length;
     },
     newShipSpeedCost() {
       return 10000 * this.shipSpeed;
