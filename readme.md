@@ -4,6 +4,8 @@ IdleFleet is a simple "idle clicker" game in the vein of (the much better) [Pape
 
 ### Changelog
 
-10/19/2021: Robert shared a PR that adds an amount to money earned/lost. I fixed a typo in my messages.
+* 10/19/2021: Changed number formatting so that I could use it in Robert's change.
 
-10/19/2021: Moved messages into a JSON file. Added random events that fall into 4 categories: win money, lose money, win ship, lose ship. Currently lose ship is disabled. 
+* 10/19/2021: Robert shared a PR that adds an amount to money earned/lost. I fixed a typo in my messages.
+
+* 10/19/2021: Moved messages into a JSON file. Added random events that fall into 4 categories: win money, lose money, win ship, lose ship. Currently lose ship is disabled. 

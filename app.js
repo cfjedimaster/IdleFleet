@@ -1,8 +1,7 @@
 import * as randomWordSlugs from "https://cdn.skypack.dev/random-word-slugs@0.1.5";
 
 Vue.filter('number', s =>  {
-  if(!window.Intl) return s;
-  return new Intl.NumberFormat().format(s);
+  return numberFormat(s);
 });
 
 Vue.config.productionTip = false;
@@ -160,14 +159,14 @@ const app = new Vue({
 
       if(whatHappened < 40) {
         let moneyWon = Math.floor(this.credits * (getRandomInt(10, 70)/100));
-        let msg = this.messages.moneyWon[getRandomInt(0, this.messages.moneyWon.length)] + ` Gain ${moneyWon} credits!`;
+        let msg = this.messages.moneyWon[getRandomInt(0, this.messages.moneyWon.length)] + ` Gain ${numberFormat(moneyWon)} credits!`;
         this.credits += moneyWon;
         this.addLog(`<strong class="good">${msg}</strong>`);
       } else if(whatHappened < 80) {
         // if money is real low, do nothing
         if(this.credits < 500) return;
         let moneyLost = Math.floor(this.credits * (getRandomInt(5, 30)/100));
-        let msg = this.messages.moneyLost[getRandomInt(0, this.messages.moneyLost.length)] + ` Lose ${moneyLost} credits.`;
+        let msg = this.messages.moneyLost[getRandomInt(0, this.messages.moneyLost.length)] + ` Lose ${numberFormat(moneyLost)} credits.`;
         this.credits -= moneyLost;
         this.addLog(`<strong class="bad">${msg}</strong>`);
       } else if(whatHappened < 92) {
@@ -271,4 +270,9 @@ function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min); 
   //The maximum is exclusive and the minimum is inclusive
+}
+
+function numberFormat(s) {
+  if(!window.Intl) return s;
+  return new Intl.NumberFormat().format(s);
 }
