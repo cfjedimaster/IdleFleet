@@ -100,7 +100,7 @@ const app = new Vue({
             that.available = true;
             that.returnTime = null;
             let moneyEarned = mainThat.earnMoney();
-            mainThat.addLog(`${that.name} returned and earned ${moneyEarned} credits.`);
+            mainThat.addLog(`${that.name} returned and earned ${numberFormat(moneyEarned)} credits.`);
             mainThat.credits += moneyEarned;
           }, this.tripDuration*DURATION_INTERVAL);
         }
