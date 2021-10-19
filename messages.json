@@ -14,10 +14,10 @@
 		"You won the lottery!",
 		"You found a stash of credits in the back of one of your ships.",
 		"You won a lawsuit against another trader.",
-		"You came in first place in a game show"
+		"You came in first place in a game show."
 	],
 	"moneyLost":[
-		"You got a tax bill from the Intergalatic Revenus Service",
+		"You got a tax bill from the Intergalatic Revenus Service.",
 		"One of your ships needed repairs.",
 		"You lost credits betting on space horses.",
 		"You lost credits to email spammers.",

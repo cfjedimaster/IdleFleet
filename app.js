@@ -167,7 +167,7 @@ const app = new Vue({
         // if money is real low, do nothing
         if(this.credits < 500) return;
         let moneyLost = Math.floor(this.credits * (getRandomInt(5, 30)/100));
-        let msg = this.messages.moneyLost[getRandomInt(0, this.messages.moneyLost.length)] + ` Lose ${moneyLost} credits.`;;
+        let msg = this.messages.moneyLost[getRandomInt(0, this.messages.moneyLost.length)] + ` Lose ${moneyLost} credits.`;
         this.credits -= moneyLost;
         this.addLog(`<strong class="bad">${msg}</strong>`);
       } else if(whatHappened < 92) {
