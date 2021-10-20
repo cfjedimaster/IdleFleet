@@ -215,8 +215,6 @@ const app = new Vue({
       if(hasOne) {
          this.nextShipReturnTime = Math.max(Math.floor((((new Date()) - result) / 1000) * -1),0) + ' seconds';
       } else return '';
-
-
     }
 
   },
