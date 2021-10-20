@@ -31,6 +31,9 @@ const ALLOW_MERCANTILE = 10000;
 // at this point, ship speed purchasing opens up
 const ALLOW_SHIPSPEED = 100000;
 
+// autoship
+const AUTO_SHIP = false;
+
 const app = new Vue({
   el:'#app',
   data: {
@@ -207,10 +210,11 @@ const app = new Vue({
           hasOne = true;
         }
       }
+      // automatically send ships if AUTO_SHIP flag is set
+      if(this.availableShips.length && AUTO_SHIP) this.sendShips();
       if(hasOne) {
          this.nextShipReturnTime = Math.max(Math.floor((((new Date()) - result) / 1000) * -1),0) + ' seconds';
       } else return '';
-      
     }
 
   },
