@@ -22,6 +22,9 @@ const DURATION_INTERVAL = 1000;
 // duration between random msg (in seconds):
 const RANDOM_MSG_INTERVAL = 200;
 
+// duration for AUTO SHIP
+const AUTO_SHIP_DURATION = 20;
+
 // how big the log div can be
 const MAX_LOG = 100;
 
@@ -31,8 +34,8 @@ const ALLOW_MERCANTILE = 10000;
 // at this point, ship speed purchasing opens up
 const ALLOW_SHIPSPEED = 100000;
 
-// autoship
-const AUTO_SHIP = false;
+// at this point, ship speed purchasing opens up
+const ALLOW_AUTOSHIP = 1000000;
 
 const app = new Vue({
   el:'#app',
@@ -40,6 +43,8 @@ const app = new Vue({
     ships:[],
     credits: INITIAL_CREDITS,
     log:[],
+    autoShip:false,
+    autoShipFlipped:false,
     mercantileSkill: 1,
     mercantileFlipped: false,
     nextShipReturnTime:null,
@@ -51,6 +56,7 @@ const app = new Vue({
     this.addShip();
     setInterval(this.randomMsg, RANDOM_MSG_INTERVAL * 1000);
     setInterval(this.updateNextShipReturnTime, 1000);
+    setInterval(this.doAutoShip, AUTO_SHIP_DURATION * 1000);
     //random events are not on intervals, but kick off first one 5ish minutes
     setTimeout(this.randomEvent, (5000 * 60) + (getRandomInt(0,3000)*60));
     this.messages = await (await fetch('./messages.json')).json();
@@ -87,7 +93,6 @@ const app = new Vue({
           */
           if(mainThat.shipSpeed >= 2) {
             let percentSavings = Math.min(getRandomInt(1, mainThat.shipSpeed), 95);
-            console.log('percent savings based on speed is ', percentSavings);
             console.log('return time was ', this.tripDuration);
             this.tripDuration -= Math.floor((this.tripDuration * (percentSavings/100)));
             console.log('return time is now ', this.tripDuration);
@@ -130,16 +135,27 @@ const app = new Vue({
       this.shipSpeed++;
     },
 
+    doAutoShip() {
+      if(this.autoShip) this.sendShips();
+    },
+
     earnMoney() {
       /*
       merc skill is rendered 1, 2, 3, etc, but it's actually:
       2/10, 3/10, etc, for #s above 10. so merc still 2 is 1.2 for a 20% bonus
+      update 10/20/2021 - dumb me, at 8 it was 0.8, you lost money. now i add 1.
+      so 8 woudl be: 1.8
+      20 would be 3
       */
       let bonus = 1;
-      if(this.mercantileSkill > 1) bonus += this.mercantileSkill/10;
+      if(this.mercantileSkill > 1) bonus += (this.mercantileSkill/10) + 1;
       return Math.floor(getRandomInt(100, 1000) * bonus);
     },
     
+    enableAutoShip() {
+      this.autoShip = !this.autoShip;
+    },
+
     generateShipName() {
       const options = {
         format:'title',
@@ -210,8 +226,7 @@ const app = new Vue({
           hasOne = true;
         }
       }
-      // automatically send ships if AUTO_SHIP flag is set
-      if(this.availableShips.length && AUTO_SHIP) this.sendShips();
+
       if(hasOne) {
          this.nextShipReturnTime = Math.max(Math.floor((((new Date()) - result) / 1000) * -1),0) + ' seconds';
       } else return '';
@@ -222,6 +237,14 @@ const app = new Vue({
     availableShips() {
       return this.ships.filter(s => s.available);
     },
+    autoShipAllowed() {
+      // only flip once
+      if(this.credits > ALLOW_AUTOSHIP) {
+        this.autoShipFlipped = true;
+      }
+      return this.autoShipFlipped;
+    },
+
     canBuyMercantile() {
       return this.credits >= this.newMercantileCost;
     },

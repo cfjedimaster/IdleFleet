@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<h2>IdleFleet Iteration 0.9003</h2>
+<h2>IdleFleet Iteration 0.9012</h2>
 
 <div id="app" v-cloak>
 
@@ -27,6 +27,7 @@
 		<button @click="buyShip" :disabled="!canBuyShip">Buy Ship: {{ newShipCost | number }} credits</button>
 		<button @click="buyMercantile" v-if="mercantileAllowed" :disabled="!canBuyMercantile">Improve Mercantile Skill: {{ newMercantileCost | number }}</button>
 		<button @click="buyShipSpeed" v-if="shipSpeedAllowed" :disabled="!canBuyShipSpeed">Improve Ship Speed: {{ newShipSpeedCost | number }}</button>
+		<button @click="enableAutoShip" v-if="autoShipAllowed" title="If enabled, this will periodically send out available ships."><span v-if="autoShip">Auto Ship Enabled</span><span v-else>Auto Ship Disabled</span></button>
 	</p>
 
 	<div id="log" v-html="logDisplay" ref="logDiv"></div>
