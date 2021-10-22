@@ -4,6 +4,8 @@ IdleFleet is a simple "idle clicker" game in the vein of (the much better) [Pape
 
 ### Changelog
 
+* 10/22/2021: Add CEPS stat.
+
 * 19/20/2021: Robert added auto ship feature, I tweaked. Also, mercantile skill was borked for < 10.
 
 * 10/19/2021: Changed number formatting so that I could use it in Robert's change.

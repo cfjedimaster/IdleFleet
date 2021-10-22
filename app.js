@@ -37,6 +37,10 @@ const ALLOW_SHIPSPEED = 100000;
 // at this point, ship speed purchasing opens up
 const ALLOW_AUTOSHIP = 1000000;
 
+// at this point, credits per second stat opens up
+const ALLOW_CEPS = 5000;
+const CEPS_DURATION = 10;
+
 const app = new Vue({
   el:'#app',
   data: {
@@ -50,7 +54,10 @@ const app = new Vue({
     nextShipReturnTime:null,
     shipSpeed: 1, 
     shipSpeedFlipped: false,
-    messages:null
+    messages:null,
+    ceps:null, 
+    cepsFlipped:false,
+    lastCEPS: INITIAL_CREDITS
   }, 
   async created() {
     this.addShip();
@@ -59,6 +66,8 @@ const app = new Vue({
     setInterval(this.doAutoShip, AUTO_SHIP_DURATION * 1000);
     //random events are not on intervals, but kick off first one 5ish minutes
     setTimeout(this.randomEvent, (5000 * 60) + (getRandomInt(0,3000)*60));
+    // even though we dont show CEPS immediately, track immediately
+    setInterval(this.generateCEPS, CEPS_DURATION * 1000);
     this.messages = await (await fetch('./messages.json')).json();
   },
   methods: {
@@ -154,6 +163,13 @@ const app = new Vue({
     
     enableAutoShip() {
       this.autoShip = !this.autoShip;
+    },
+
+    generateCEPS() {
+      let change = this.credits - this.lastCEPS;
+      console.log('change', change);
+      this.ceps = Math.floor(change / CEPS_DURATION);
+      this.lastCEPS = this.credits;
     },
 
     generateShipName() {
@@ -259,6 +275,13 @@ const app = new Vue({
     },
     logDisplay() {
       return this.log.join('<br>');
+    },
+    cepsAllowed() {
+      // only flip once
+      if(this.credits > ALLOW_CEPS) {
+        this.cepsFlipped = true;
+      }
+      return this.cepsFlipped;
     },
     mercantileAllowed() {
       // only flip once

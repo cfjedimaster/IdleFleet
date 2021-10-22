@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<h2>IdleFleet Iteration 0.9012</h2>
+<h2>IdleFleet Iteration 0.9087</h2>
 
 <div id="app" v-cloak>
 
@@ -18,6 +18,7 @@
 		<span title="Represents ships at home ready to be sent out.">Ships Available to Send: {{ numAvailableShips }}</span><br/>
 		<span title="Reports when the soonest ship return time is.">Next Ship Returns In: {{ nextShipReturnTime }}</span><br/>
 		Credits: {{ credits | number }}<br/>
+		<span v-if="cepsAllowed" title="Average credits earned (or lost) over the past 10 seconds.">CEPS: {{ ceps | number }}</span><br/>
 		<span v-if="mercantileAllowed" title="Represents how well your ships will trade and earn money.">Mercantile Skill: {{ mercantileSkill }}<br/></span>
 		<span v-if="shipSpeedAllowed" title="Represents how much faster your ships travel.">Ship Speed Boost: {{ shipSpeed }}<br/></span>
 	</p>
