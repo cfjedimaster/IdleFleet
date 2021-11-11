@@ -10,10 +10,19 @@ body {
  overflow: auto;
 }
 
-footer {
-  position: absolute;
-  bottom: 0;
+
+@media all and  (min-height: 600px) {
+  footer {
+    position: absolute;
+    bottom: 0;
+  }
 }
+@media not all and  (min-height: 600px) {
+  footer {
+    margin-top: 40px;
+  }
+}
+
 
 footer a {
   color: rgb(175, 21, 155);
