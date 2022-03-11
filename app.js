@@ -61,8 +61,8 @@ const app = new Vue({
   }, 
   async created() {
     this.addShip();
+    setInterval(this.heartBeat, 1000);
     setInterval(this.randomMsg, RANDOM_MSG_INTERVAL * 1000);
-    setInterval(this.updateNextShipReturnTime, 1000);
     setInterval(this.doAutoShip, AUTO_SHIP_DURATION * 1000);
     //random events are not on intervals, but kick off first one 5ish minutes
     setTimeout(this.randomEvent, (5000 * 60) + (getRandomInt(0,3000)*60));
@@ -71,7 +71,38 @@ const app = new Vue({
     this.messages = await (await fetch('./messages.json')).json();
   },
   methods: {
+    heartBeat() {
+      /*
+      heartBeat now handles all ship related travel announcements. 
+      */
 
+      let nextShipResult = new Date(2099,1,1);
+      let hasNextShip = false;
+
+      //loop through ships and see who is done
+      for(let ship of this.ships) {
+        //unavailable ships are traveling
+        if(!ship.available) {
+          if(new Date() > ship.returnTime) {
+            ship.available = true;
+            ship.returnTime = null;
+            let moneyEarned = this.earnMoney();
+            this.addLog(`${ship.name} returned and earned ${numberFormat(moneyEarned)} credits.`);
+            this.credits += moneyEarned;
+          } else if (ship.returnTime < nextShipResult) {
+              nextShipResult = ship.returnTime;
+              hasNextShip = true;
+          }
+        }
+
+
+      }
+
+      if(hasNextShip) {
+        this.nextShipReturnTime = Math.max(Math.floor((((new Date()) - nextShipResult) / 1000) * -1),0) + ' seconds';
+      } 
+
+    },
     addLog(s) {
       this.log.push(s);
       if(this.log.length > MAX_LOG) this.log.shift();
@@ -102,24 +133,14 @@ const app = new Vue({
           */
           if(mainThat.shipSpeed >= 2) {
             let percentSavings = Math.min(getRandomInt(1, mainThat.shipSpeed), 95);
-            console.log('return time was ', this.tripDuration);
+            //console.log('return time was ', this.tripDuration);
             this.tripDuration -= Math.floor((this.tripDuration * (percentSavings/100)));
-            console.log('return time is now ', this.tripDuration);
+            //console.log('return time is now ', this.tripDuration);
           }
-          console.log('trip started, returns in '+this.tripDuration+ ' seconds');
+          //console.log('trip started, returns in '+this.tripDuration+ ' seconds');
           let now = new Date();
           now.setSeconds(now.getSeconds() + this.tripDuration);
           this.returnTime = now;
-
-          let that = this;
-
-          setTimeout(function() {
-            that.available = true;
-            that.returnTime = null;
-            let moneyEarned = mainThat.earnMoney();
-            mainThat.addLog(`${that.name} returned and earned ${numberFormat(moneyEarned)} credits.`);
-            mainThat.credits += moneyEarned;
-          }, this.tripDuration*DURATION_INTERVAL);
         }
       };
       this.ships.push(newShip);
@@ -167,7 +188,6 @@ const app = new Vue({
 
     generateCEPS() {
       let change = this.credits - this.lastCEPS;
-      console.log('change', change);
       this.ceps = Math.floor(change / CEPS_DURATION);
       this.lastCEPS = this.credits;
     },
@@ -180,7 +200,6 @@ const app = new Vue({
       return randomWordSlugs.generateSlug(2, options);
     },
     randomEvent() {
-      console.log('randomEvent called');
       /*
       Random events fall into 4 categories:
         get money
@@ -214,7 +233,7 @@ const app = new Vue({
         if(this.ships.length < 10) return;
         let msg = this.messages.shipLost[getRandomInt(0, this.messages.shipLost.length)];
         this.addLog(`<strong class="bad">${msg}</strong>`);
-        //no idea if this will break shijt
+        //no idea if this will break shit
         this.ships.shift();
       }
 
@@ -226,27 +245,10 @@ const app = new Vue({
       this.addLog(`<strong>${msg}</strong>`);
     },
     sendShips() {
-      console.log('running sendShips');
       for(let i=this.availableShips.length-1;i>=0;i--) {
-        console.log('sending ship '+this.availableShips[i].name);
         this.availableShips[i].trip();
       }
-    },
-    
-    updateNextShipReturnTime() {
-      let result = new Date(2099,1,1);
-      let hasOne = false;
-      for(let i=0;i<this.ships.length;i++) {
-        if(this.ships[i].returnTime && this.ships[i].returnTime < result) {
-          result = this.ships[i].returnTime;
-          hasOne = true;
-        }
-      }
-
-      if(hasOne) {
-         this.nextShipReturnTime = Math.max(Math.floor((((new Date()) - result) / 1000) * -1),0) + ' seconds';
-      } else return '';
-    }
+    }    
 
   },
   computed: {
