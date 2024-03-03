@@ -3,7 +3,7 @@ import * as randomWordSlugs from "https://cdn.skypack.dev/random-word-slugs@0.1.
 /*
 Constants for the game:
 */
-const INITIAL_CREDITS = 500 * 10000;
+const INITIAL_CREDITS = 500;
 
 // number of seconds for trip
 const DURATION_MIN = 10;
