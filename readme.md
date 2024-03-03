@@ -2,16 +2,16 @@
 
 IdleFleet is a simple "idle clicker" game in the vein of (the much better) [Paperclips](https://www.decisionproblem.com/paperclips/index2.html). The mechanics are not spelled out in the game, and that's on purpose so as you play, things open up and surprise you.
 
+Favicon credit: <a href="https://www.flaticon.com/free-icons/spaceship" title="spaceship icons">Spaceship icons created by Iconic Panda - Flaticon</a>
 
 ### To Do
 
 * For credits, over some limit, use this: https://www.raymondcamden.com/2023/01/04/using-intl-for-short-number-formatting
-* Move conts into its own json.
 * Add PWA support
 
 
 ### Changelog
-
+* 3/3/2024: Manifest/favicons added.
 * 3/3/2024: Added 'rank', based on merchant marine, with mods. 
 * 3/3/2024: Moved out constants. Added a cheat mode so I don't have to 'hack' to test things. 
 * 3/3/2024: Rebuilt in Alpine.js
