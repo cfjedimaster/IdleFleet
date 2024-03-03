@@ -9,11 +9,11 @@
 </head>
 
 <body>
-<h2>IdleFleet Iteration 1.01</h2>
+<h2>IdleFleet Iteration 1.02</h2>
 
 <div x-data="app" x-cloak>
 	<p>
-		Total Fleet Size: <span x-text="fleetSize"></span><br/>
+		Total Fleet Size: <span x-text="fleetSize"></span> (Your Rank: <span x-text="rank"></span>)<br/>
 		<span title="Represents ships at home ready to be sent out.">Ships Available to Send: <span x-text="numberFormat(numAvailableShips)"></span></span><br/>
 		<span title="Reports when the soonest ship return time is.">Next Ship Returns In: <span x-text="nextShipReturnTime"></span></span><br/>
 		Credits: <span x-text="numberFormat(credits)"></span><br/>
@@ -36,7 +36,7 @@
 	<p x-show="cheatsEnabled">
 	<button @click="randomEvent">Random Event</button>
 	<button @click="credits+=1000000">🤑🤑🤑</button>
-
+	<button @click="addShip">🚢🚢🚢</button>
 	</p>
 
 	<footer>

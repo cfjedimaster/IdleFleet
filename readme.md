@@ -7,12 +7,12 @@ IdleFleet is a simple "idle clicker" game in the vein of (the much better) [Pape
 
 * For credits, over some limit, use this: https://www.raymondcamden.com/2023/01/04/using-intl-for-short-number-formatting
 * Move conts into its own json.
-* Add titles (merchant marine ranks)
 * Add PWA support
 
 
 ### Changelog
 
+* 3/3/2024: Added 'rank', based on merchant marine, with mods. 
 * 3/3/2024: Moved out constants. Added a cheat mode so I don't have to 'hack' to test things. 
 * 3/3/2024: Rebuilt in Alpine.js
 

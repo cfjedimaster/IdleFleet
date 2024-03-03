@@ -165,8 +165,7 @@ document.addEventListener('alpine:init', () => {
       //for $$ stuff, it's always a percentage so the rewards are good later on
       
       let whatHappened = getRandomInt(0, 100);
-whatHappened = 79;
-console.log('wtf');
+
       if(whatHappened < 40) {
         let moneyWon = Math.floor(this.credits * (getRandomInt(10, 70)/100));
         let msg = this.messages.moneyWon[getRandomInt(0, this.messages.moneyWon.length)] + ` Gain ${this.numberFormat(moneyWon)} credits!`;
@@ -276,6 +275,12 @@ console.log('wtf');
 
     get numAvailableShips() {
       return this.availableShips.length;
+    },
+
+    // lamely based on number of ships, and length of string
+    get rank() {
+      let pos = this.ships.length.toString().length - 1;
+      return constants.RANKS[ pos>constants.RANKS.length-1?constants.RANKS.length-1:pos];
     },
 
     get shipsAvailable() {

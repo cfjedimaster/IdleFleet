@@ -28,3 +28,17 @@ export const ALLOW_AUTOSHIP = 1000000;
 // at this point, credits per second stat opens up
 export const ALLOW_CEPS = 5000;
 export const CEPS_DURATION = 10;
+
+// in theory, 1B for max
+export const RANKS = [
+	"Novice", 
+	"Spaceperson Apprentice", 
+	"Ordinary Spaceperson",
+	"Able Spaceperson",
+	"Bosun",
+	"Deck Cadet", 
+	"Third Mate",
+	"Second Mate", 
+	"Chief Mate",
+	"Captain"
+];
