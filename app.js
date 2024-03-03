@@ -1,43 +1,10 @@
 import * as randomWordSlugs from "https://cdn.skypack.dev/random-word-slugs@0.1.5";
-
-/*
-Constants for the game:
-*/
-const INITIAL_CREDITS = 500;
-
-// number of seconds for trip
-const DURATION_MIN = 10;
-const DURATION_MAX = 41;
-
-// durations are in seconds, I change this when testing
-const DURATION_INTERVAL = 1000;
-
-// duration between random msg (in seconds):
-const RANDOM_MSG_INTERVAL = 200;
-
-// duration for AUTO SHIP
-const AUTO_SHIP_DURATION = 20;
-
-// how big the log div can be
-const MAX_LOG = 100;
-
-// at this point, mercantile purchasing opens up
-const ALLOW_MERCANTILE = 10000;
-
-// at this point, ship speed purchasing opens up
-const ALLOW_SHIPSPEED = 100000;
-
-// at this point, ship speed purchasing opens up
-const ALLOW_AUTOSHIP = 1000000;
-
-// at this point, credits per second stat opens up
-const ALLOW_CEPS = 5000;
-const CEPS_DURATION = 10;
+import * as constants from "./constants.js";
 
 document.addEventListener('alpine:init', () => {
   Alpine.data('app', () => ({
     ships:[],
-    credits: INITIAL_CREDITS,
+    credits: constants.INITIAL_CREDITS,
     log:[],
     autoShip:false,
     autoShipFlipped:false,
@@ -49,17 +16,17 @@ document.addEventListener('alpine:init', () => {
     messages:null,
     ceps:null, 
     cepsFlipped:false,
-    lastCEPS: INITIAL_CREDITS,
+    lastCEPS: constants.INITIAL_CREDITS,
 
     async init() {
       this.addShip();
       setInterval(() => { this.heartBeat() }, 1000);
-      setInterval(() => { this.randomMsg() }, RANDOM_MSG_INTERVAL * 1000);
-      setInterval(() => { this.doAutoShip() }, AUTO_SHIP_DURATION * 1000);
+      setInterval(() => { this.randomMsg() }, constants.RANDOM_MSG_INTERVAL * 1000);
+      setInterval(() => { this.doAutoShip() }, constants.AUTO_SHIP_DURATION * 1000);
       //random events are not on intervals, but kick off first one 5ish minutes
       setTimeout(() => { this.randomEvent() }, (5000 * 60) + (getRandomInt(0,3000)*60));
       // even though we dont show CEPS immediately, track immediately
-      setInterval(() => { this.generateCEPS() }, CEPS_DURATION * 1000);
+      setInterval(() => { this.generateCEPS() }, constants.CEPS_DURATION * 1000);
       this.messages = await (await fetch('./messages.json')).json();
     },
 
@@ -94,7 +61,7 @@ document.addEventListener('alpine:init', () => {
 
     addLog(s) {
       this.log.push(s);
-      if(this.log.length > MAX_LOG) this.log.shift();
+      if(this.log.length > constants.MAX_LOG) this.log.shift();
       let that = this;
       if(this.$refs.logDiv) {
         setTimeout(function() {
@@ -114,7 +81,7 @@ document.addEventListener('alpine:init', () => {
         trip() {
           mainThat.addLog(`${this.name} departed...`);
           this.available = false;
-          this.tripDuration = getRandomInt(DURATION_MIN, DURATION_MAX);
+          this.tripDuration = getRandomInt(constants.DURATION_MIN, constants.DURATION_MAX);
           // reduce by ship speed bonus
           
           //current logic, given X for speed, you get 1-X percent saving, maxed at 95. 
@@ -175,7 +142,7 @@ document.addEventListener('alpine:init', () => {
 
     generateCEPS() {
       let change = this.credits - this.lastCEPS;
-      this.ceps = Math.floor(change / CEPS_DURATION);
+      this.ceps = Math.floor(change / constants.CEPS_DURATION);
       this.lastCEPS = this.credits;
     },
 
@@ -198,7 +165,8 @@ document.addEventListener('alpine:init', () => {
       //for $$ stuff, it's always a percentage so the rewards are good later on
       
       let whatHappened = getRandomInt(0, 100);
-
+whatHappened = 79;
+console.log('wtf');
       if(whatHappened < 40) {
         let moneyWon = Math.floor(this.credits * (getRandomInt(10, 70)/100));
         let msg = this.messages.moneyWon[getRandomInt(0, this.messages.moneyWon.length)] + ` Gain ${this.numberFormat(moneyWon)} credits!`;
@@ -247,7 +215,7 @@ document.addEventListener('alpine:init', () => {
 
     get autoShipAllowed() {
       // only flip once
-      if(this.credits > ALLOW_AUTOSHIP) {
+      if(this.credits > constants.ALLOW_AUTOSHIP) {
         this.autoShipFlipped = true;
       }
       return this.autoShipFlipped;
@@ -265,6 +233,11 @@ document.addEventListener('alpine:init', () => {
       return this.credits >= this.newShipSpeedCost;
     },
 
+    get cheatsEnabled() {
+      let p = new URLSearchParams(window.location.search);
+      return p.has('xyzzy');
+    },
+
     get fleetSize() {
       return this.ships.length;
     },
@@ -275,7 +248,7 @@ document.addEventListener('alpine:init', () => {
 
     get cepsAllowed() {
       // only flip once
-      if(this.credits > ALLOW_CEPS) {
+      if(this.credits > constants.ALLOW_CEPS) {
         this.cepsFlipped = true;
       }
       return this.cepsFlipped;
@@ -283,7 +256,7 @@ document.addEventListener('alpine:init', () => {
 
     get mercantileAllowed() {
       // only flip once
-      if(this.credits > ALLOW_MERCANTILE) {
+      if(this.credits > constants.ALLOW_MERCANTILE) {
         this.mercantileFlipped = true;
       }
       return this.mercantileFlipped;
@@ -311,7 +284,7 @@ document.addEventListener('alpine:init', () => {
 
     get shipSpeedAllowed() {
       // only flip once
-      if(this.credits > ALLOW_SHIPSPEED) {
+      if(this.credits > constants.ALLOW_SHIPSPEED) {
         this.shipSpeedFlipped = true;
       }
       return this.shipSpeedFlipped;

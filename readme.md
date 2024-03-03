@@ -13,6 +13,7 @@ IdleFleet is a simple "idle clicker" game in the vein of (the much better) [Pape
 
 ### Changelog
 
+* 3/3/2024: Moved out constants. Added a cheat mode so I don't have to 'hack' to test things. 
 * 3/3/2024: Rebuilt in Alpine.js
 
 * 11/10/2021: Rebuilt how time works (sounds dramatic, right)
