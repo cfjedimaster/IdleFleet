@@ -4,45 +4,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="app.css">
 	<style>
-	[v-cloak] {display: none}
+	[x-cloak] {display: none}
 	</style>
 </head>
 
 <body>
-<h2>IdleFleet Iteration 0.9621</h2>
+<h2>IdleFleet Iteration 1.0</h2>
 
-<div id="app" v-cloak>
-
+<div x-data="app" x-cloak>
 	<p>
-		Total Fleet Size: {{ fleetSize }}<br/>
-		<span title="Represents ships at home ready to be sent out.">Ships Available to Send: {{ numAvailableShips }}</span><br/>
-		<span title="Reports when the soonest ship return time is.">Next Ship Returns In: {{ nextShipReturnTime }}</span><br/>
-		Credits: {{ credits | number }}<br/>
-		<span v-if="cepsAllowed" title="Average credits earned (or lost) over the past 10 seconds.">CEPS: {{ ceps | number }}</span><br/>
-		<span v-if="mercantileAllowed" title="Represents how well your ships will trade and earn money.">Mercantile Skill: {{ mercantileSkill }}<br/></span>
-		<span v-if="shipSpeedAllowed" title="Represents how much faster your ships travel.">Ship Speed Boost: {{ shipSpeed }}<br/></span>
+		Total Fleet Size: <span x-text="fleetSize"></span><br/>
+		<span title="Represents ships at home ready to be sent out.">Ships Available to Send: <span x-text="numberFormat(numAvailableShips)"></span></span><br/>
+		<span title="Reports when the soonest ship return time is.">Next Ship Returns In: <span x-text="nextShipReturnTime"></span></span><br/>
+		Credits: <span x-text="numberFormat(credits)"></span><br/>
+		<span x-show="cepsAllowed" title="Average credits earned (or lost) over the past 10 seconds.">CEPS: <span x-text="numberFormat(ceps)"></span><br/></span>
+		<span x-show="mercantileAllowed" title="Represents how well your ships will trade and earn money.">Mercantile Skill: <span x-text="mercantileSkill"></span><br/></span>
+		<span x-show="shipSpeedAllowed" title="Represents how much faster your ships travel.">Ship Speed Boost: <span x-text="shipSpeed"></span><br/></span>
 	</p>
 
 	<p>
 		<button @click="sendShips" :disabled="!shipsAvailable">Send Ship(s)</button> 
-		<button @click="buyShip" :disabled="!canBuyShip">Buy Ship: {{ newShipCost | number }} credits</button>
-		<button @click="buyMercantile" v-if="mercantileAllowed" :disabled="!canBuyMercantile">Improve Mercantile Skill: {{ newMercantileCost | number }}</button>
-		<button @click="buyShipSpeed" v-if="shipSpeedAllowed" :disabled="!canBuyShipSpeed">Improve Ship Speed: {{ newShipSpeedCost | number }}</button>
-		<button @click="enableAutoShip" v-if="autoShipAllowed" title="If enabled, this will periodically send out available ships."><span v-if="autoShip">Auto Ship Enabled</span><span v-else>Auto Ship Disabled</span></button>
+		<button @click="buyShip" :disabled="!canBuyShip">Buy Ship: <span x-text="numberFormat(newShipCost)"></span> credits</button>
+		<button @click="buyMercantile" x-show="mercantileAllowed" :disabled="!canBuyMercantile">Improve Mercantile Skill: <span x-text="numberFormat(newMercantileCost)"></span></button>
+		<button @click="buyShipSpeed" x-show="shipSpeedAllowed" :disabled="!canBuyShipSpeed">Improve Ship Speed: <span x-text="numberFormat(newShipSpeedCost)"></span></button>
+		<button @click="enableAutoShip" x-show="autoShipAllowed" title="If enabled, this will periodically send out available ships."><span x-show="autoShip">Auto Ship Enabled</span><span x-show="!autoShip">Auto Ship Disabled</span></button>
 	</p>
 
-	<div id="log" v-html="logDisplay" ref="logDiv"></div>
-	<!--
-	<button @click="randomEvent">randevent</button>
-	-->
+	<div id="log" x-html="logDisplay" x-ref="logDiv"></div>
+
 	<footer>
 	<p>
 	Created by <a href="https://www.raymondcamden.com" target="_new">Raymond Camden</a> - <a href="https://github.com/cfjedimaster/IdleFleet" target="_new">github repo</a>
 	</p>
 	</footer>
+
 </div>
 
-	<script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
-	<script src="app.js" type="module"></script>
+<script src="app.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </body>
 </html>
