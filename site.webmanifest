@@ -1,7 +1,7 @@
 {
 	"name": "IdleFleet",
 	"short_name": "IdleFleet",
-	"start_url":"https://idlefleet.netlify.com", 
+	"start_url":"https://idlefleet.netlify.app", 
 	"icons": [
 		{
 			"src": "/android-chrome-192x192.png",
