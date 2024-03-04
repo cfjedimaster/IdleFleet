@@ -7,10 +7,12 @@ Favicon credit: <a href="https://www.flaticon.com/free-icons/spaceship" title="s
 ### To Do
 
 * For credits, over some limit, use this: https://www.raymondcamden.com/2023/01/04/using-intl-for-short-number-formatting
-* Add PWA support
 
 
 ### Changelog
+
+* 3/4/2024: Added offline support via service worker. VERY unsure about this.
+* 3/4/2024: Organized files a bit.
 * 3/3/2024: Manifest/favicons added.
 * 3/3/2024: Added 'rank', based on merchant marine, with mods. 
 * 3/3/2024: Moved out constants. Added a cheat mode so I don't have to 'hack' to test things. 

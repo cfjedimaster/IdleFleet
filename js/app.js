@@ -1,5 +1,12 @@
 import * as randomWordSlugs from "https://cdn.skypack.dev/random-word-slugs@0.1.5";
-import * as constants from "./constants.js";
+import * as constants from "/js/constants.js";
+
+if ('serviceWorker' in navigator) {
+  // Use the window load event to keep the page load performant
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js');
+  });
+}
 
 document.addEventListener('alpine:init', () => {
   Alpine.data('app', () => ({
@@ -27,7 +34,7 @@ document.addEventListener('alpine:init', () => {
       setTimeout(() => { this.randomEvent() }, (5000 * 60) + (getRandomInt(0,3000)*60));
       // even though we dont show CEPS immediately, track immediately
       setInterval(() => { this.generateCEPS() }, constants.CEPS_DURATION * 1000);
-      this.messages = await (await fetch('./messages.json')).json();
+      this.messages = await (await fetch('/js/messages.json')).json();
     },
 
     heartBeat() {
