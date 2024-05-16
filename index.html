@@ -13,7 +13,7 @@
 </head>
 
 <body>
-<h2>IdleFleet Iteration 1.05</h2>
+<h2>IdleFleet Iteration 1.06</h2>
 
 <div x-data="app" x-cloak>
 	<p>
@@ -28,7 +28,9 @@
 
 	<p>
 		<button @click="sendShips" :disabled="!shipsAvailable">Send Ship(s)</button> 
-		<button @click="buyShip" :disabled="!canBuyShip">Buy Ship: <span x-text="numberFormat(newShipCost)"></span> credits</button>
+		<button @click="buyShip(1)" :disabled="!canBuyShip">Buy Ship: <span x-text="numberFormat(newShipCost)"></span> credits</button>
+		<button @click="buyShip(10)" x-show="buy10XShipAllowed" :disabled="!canBuy10Ship">Buy 10X Ships: <span x-text="numberFormat(new10ShipCost)"></span> credits</button>
+		<button @click="buyShip(100)" x-show="buy100XShipAllowed" :disabled="!canBuy100Ship">Buy 100X Ships: <span x-text="numberFormat(new100ShipCost)"></span> credits</button>
 		<button @click="buyMercantile" x-show="mercantileAllowed" :disabled="!canBuyMercantile">Improve Mercantile Skill: <span x-text="numberFormat(newMercantileCost)"></span></button>
 		<button @click="buyShipSpeed" x-show="shipSpeedAllowed" :disabled="!canBuyShipSpeed">Improve Ship Speed: <span x-text="numberFormat(newShipSpeedCost)"></span></button>
 		<button @click="enableAutoShip" x-show="autoShipAllowed" title="If enabled, this will periodically send out available ships."><span x-show="autoShip">Auto Ship Enabled</span><span x-show="!autoShip">Auto Ship Disabled</span></button>

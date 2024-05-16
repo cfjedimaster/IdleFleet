@@ -25,6 +25,11 @@ export const ALLOW_SHIPSPEED = 100000;
 // at this point, ship speed purchasing opens up
 export const ALLOW_AUTOSHIP = 1000000;
 
+// at this point, you can buy 10x ships, if you have the money
+export const ALLOW_10XSHIP = 50;
+// ditto for 100X
+export const ALLOW_100XSHIP = 100;
+
 // at this point, credits per second stat opens up
 export const ALLOW_CEPS = 5000;
 export const CEPS_DURATION = 10;

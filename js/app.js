@@ -116,10 +116,12 @@ document.addEventListener('alpine:init', () => {
       this.mercantileSkill++;
     },
 
-    buyShip() {
-      if(!this.canBuyShip) return;
-      this.credits -= this.newShipCost;
-      this.addShip();      
+    buyShip(count) {
+      for(let i=0;i<count;i++) {
+        if(!this.canBuyShip) return;
+        this.credits -= this.newShipCost;
+        this.addShip();
+      }
     },
 
     buyShipSpeed() {
@@ -224,12 +226,28 @@ document.addEventListener('alpine:init', () => {
       return this.autoShipFlipped;
     },
 
+    get buy10XShipAllowed() {
+      return this.ships.length >= constants.ALLOW_10XSHIP;
+    },
+
+    get buy100XShipAllowed() {
+      return this.ships.length >= constants.ALLOW_100XSHIP;
+    },
+
     get canBuyMercantile() {
       return this.credits >= this.newMercantileCost;
     },
 
     get canBuyShip() {
       return this.credits >= this.newShipCost;
+    },
+
+    get canBuy10Ship() {
+      return this.credits >= this.new10ShipCost;
+    },
+
+    get canBuy100Ship() {
+      return this.credits >= this.new100ShipCost;
     },
 
     get canBuyShipSpeed() {
@@ -269,8 +287,29 @@ document.addEventListener('alpine:init', () => {
       return 10000 * this.mercantileSkill;
     },
 
+    // Broke this out so I could do 10X ship
+    shipCost(x) {
+      return 1250 * x;
+    },
+
     get newShipCost() {
-      return 1250 * this.ships.length;
+      return this.shipCost(this.ships.length);
+    },
+
+    get new10ShipCost() {
+      let cost = 0;
+      for(let i=0;i<10;i++) {
+        cost += this.shipCost(this.ships.length + 1);
+      }
+      return cost;
+    },
+
+    get new100ShipCost() {
+      let cost = 0;
+      for(let i=0;i<100;i++) {
+        cost += this.shipCost(this.ships.length + 1);
+      }
+      return cost;
     },
 
     get newShipSpeedCost() {
