@@ -190,13 +190,10 @@ document.addEventListener('alpine:init', () => {
         this.addLog(`<strong class="good">${msg}</strong>`);
         this.addShip();
       } else {
-        // disabled for now as I need to work on logic for removing a ship 
-        return;
         if(this.ships.length < 10) return;
         let msg = this.messages.shipLost[getRandomInt(0, this.messages.shipLost.length)];
         this.addLog(`<strong class="bad">${msg}</strong>`);
-        //no idea if this will break shit
-        this.ships.shift();
+        this.ships.splice(getRandomInt(0, this.ships.length),1);
       }
 
       setTimeout(this.randomEvent, (5000 * 60) + (getRandomInt(0,3000)*60));

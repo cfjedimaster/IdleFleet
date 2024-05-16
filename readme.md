@@ -11,6 +11,7 @@ Favicon credit: <a href="https://www.flaticon.com/free-icons/spaceship" title="s
 
 ### Changelog
 
+* 5/15/2024: You can now lose ships in random events.
 * 3/4/2024: Added offline support via service worker. VERY unsure about this.
 * 3/4/2024: Organized files a bit.
 * 3/3/2024: Manifest/favicons added.
